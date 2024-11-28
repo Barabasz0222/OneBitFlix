@@ -1,7 +1,7 @@
 import { ResourceOptions } from "adminjs";
 
 export const courseResourceOptions: ResourceOptions = {
-    navigation: 'Cursos',
+    navigation: 'Catálogo',
     editProperties: ['name', 'synopsis', 'uploaThumbnail', 'featured', 'categoryId'],
     filterProperties: ['name', 'synopsis', 'featured', 'categoryId', 'createdAt', 'updatedAt'],
     listProperties: ['id', 'name', 'synopsis', 'featured', 'categoryId'],
