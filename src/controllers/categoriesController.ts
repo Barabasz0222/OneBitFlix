@@ -1,21 +1,34 @@
 import { Request, Response } from "express"
-import { categoryServide } from "../services/categoryService"
+import { categoryServise } from "../services/categoryService"
 import { getPaginationParams } from "../helpers/getPaginationParams"
 
 export const categoriesController = {
+    //GET /categories
     index: async (req: Request, res: Response) => {
         const [page, perPage ] = getPaginationParams(req.query)
 
-
         try {
-            const paginatedCategories = await categoryServide.findAllPaginated(page, perPage)
+            const paginatedCategories = await categoryServise.findAllPaginated(page, perPage)
 
             return res.json(paginatedCategories)
         
         } catch (err) {
             if(err instanceof Error) {
                 return res.status(400).json({ message: err.message })
+            }   
         }
+    },
+        //GET /categories/:id
+        show: async (req: Request, res: Response) => {
+            const { id } = req.params
 
+            try {
+                const category = await categoryServise.findByIdWithCourses(id)
+                return res.json(category)
+            } catch (err) {
+                if(err instanceof Error) {
+                    return res.status(400).json({ message: err.message })
+                }  
+        }
     }
-}}
+}
