@@ -1,4 +1,6 @@
+import { Op } from "sequelize"
 import { Course } from "../models"
+import { coursesController } from "../controllers/coursesController"
 
 export const courseService = {
     findByIdWithEpisodes: async (id: string) => {
@@ -52,5 +54,30 @@ export const courseService = {
         })
 
         return courses
+    },
+
+    findByName : async (name:string, page: number, perPage: number) => {
+        const { count, rows} = await Course.findAndCountAll({
+            attributes: [
+                'id',
+                'name', 
+                'synopsis', 
+                [ 'thumbnail_url', 'thumbnailUrl'],
+            ],
+            where: {
+                name: {
+                    [Op.iLike]: `%${name}%`
+                }
+            },
+            limit: perPage,
+            offset: (page - 1) * perPage
+        })
+
+        return {
+            courses: rows,
+            page,
+            perPage,
+            total: count
+        }
     }
 }
